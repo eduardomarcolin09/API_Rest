@@ -4,10 +4,20 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Traits\HttpsResponses;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
+    use HttpsResponses;
+
+    // Ao invés de proteger no api.php, da pra proteger os métodos, assim:
+    // public function __construct(){
+
+    //     $this->middleware('auth:sanctum')->only(['store','update']);
+
+    // }
+
     public function index()
     {
         # Retorna somente os usuários, sem seus dados relacionados:
@@ -24,6 +34,9 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
+        if(!auth()->user()->tokenCan('user-store')) {
+            return $this->error('Não autorizado', 403);
+        }
         // Valida os dados de entrada
         $validated = $request->validate([
             'name' => 'required|string|max:255',
