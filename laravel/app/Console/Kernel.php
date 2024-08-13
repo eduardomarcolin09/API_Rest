@@ -12,6 +12,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
+        // o everyMinute() vai verificar de minuto em minuto os tokens que ja foram vencidos e deleta-los do banco, tem outros como todo dia x horário
+        $schedule->command('sanctum:prune-expired --hours=24')->everyMinute();
         // $schedule->command('inspire')->hourly();
     }
 
