@@ -16,7 +16,7 @@ class AuthController extends Controller
 
         if(Auth::attempt($request->only('email','password'))) {
             return $this->response('Autorizado', 200, [
-                'token' => $request->user()->createToken('teste', ['teste-index'])->plainTextToken
+                'token' => $request->user()->createToken('user', ['user-index'])->plainTextToken
                 // depois do 'user', da para passar o nome que eu quiser, é o que o usuário vai poder fazer
             ]);
             //  vai retornar o token, a data de expiração dele, id do token, qnd foi criado, etc..
@@ -26,7 +26,9 @@ class AuthController extends Controller
         
     }
 
-    public function logout() {
-
+    public function logout(Request $request) {
+        $request->user()->currentAccessToken()->delete();
+        
+        return $this->response('Token Revogado',200);
     }
 }

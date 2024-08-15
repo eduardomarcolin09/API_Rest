@@ -18,6 +18,7 @@ Route::post('login', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('users', UserController::class);
     Route::get('teste', [TesteController::class, 'index'])->middleware('ability:teste-index');
+    Route::post('logout', [AuthController::class, 'logout']);
 });
 
 
